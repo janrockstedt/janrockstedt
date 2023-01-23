@@ -1,0 +1,175 @@
+type: custom:apexcharts-card
+update_interval: 1min
+update_delay: 10s
+show:
+  last_updated: true
+now:
+  show: true
+  color: white
+graph_span: 23h
+span:
+  start: day
+header:
+  title: Elpriser i elområde SE4 (spotpris per kWh)
+  show: true
+  show_states: true
+  colorize_states: true
+  floating: false
+apex_config:
+  annotations:
+    yaxis:
+      - 'y': 1.9
+        position: back
+        strokeDashArray: 0
+        borderColor: '#DDDDDD'
+        borderWidth: 1
+        offsetX: 4
+        label:
+          position: left
+          offsetX: -5.5
+          offsetY: 6.6
+          borderColor: '#aaa'
+          text: '1.9'
+          style:
+            color: '#fff'
+            background: '#775DD0'
+            padding:
+              left: 3
+              right: 3
+              top: 1
+              bottom: 2
+  show:
+    offset_in_name: false
+  chart:
+    height: 332px
+  legend:
+    showForSingleSeries: true
+  plotOptions:
+    bar:
+      columnWidth: 75%
+      borderRadius: 3
+  yaxis:
+    min: -0.2
+    decimalsInFloat: 2
+    tickAmount: 10
+    forceNiceScale: true
+  xaxis:
+    labels:
+      datetimeFormatter:
+        hour: HH
+hours_12: false
+stacked: false
+experimental:
+  color_threshold: true
+all_series_config:
+  show:
+    datalabels: false
+    extremas: true
+    in_brush: false
+  float_precision: 1
+  type: area
+  invert: false
+  fill_raw: zero
+series:
+  - entity: sensor.nordpool_kwh_se4_sek_3_10_025
+    color: coral
+    type: column
+    offset: '-0.5h'
+    color_threshold:
+      - value: -1
+        color: '#a4de02'
+      - value: 1.5
+        color: '#76ba1b'
+      - value: 2.5
+        color: '#4c9a2a'
+      - value: 3.5
+        color: '#ff081c'
+      - value: 5
+        color: '#ff2400'
+      - value: 6
+        color: '#ff0000'
+      - value: 7
+        color: '#d70000'
+      - value: 8
+        color: '#c60000'
+      - value: 9
+        color: '#b70000'
+      - value: 10
+        color: '#9b0000'
+    float_precision: 2
+    stroke_width: 0
+    name: Idag
+    unit: SEK/kWh
+    show:
+      in_header: false
+      legend_value: false
+      extremas: true
+      offset_in_name: false
+    data_generator: |
+      return entity.attributes.today.map((price, index) => {
+        return [new Date().setHours(index,0,0), price];
+      });
+  - entity: sensor.nordpool_kwh_se4_sek_3_10_025
+    color: lightblue
+    offset: '-0.5h'
+    extend_to: false
+    name: Imorgon
+    unit: SEK/kWh
+    float_precision: 2
+    opacity: 0.2
+    stroke_width: 2
+    show:
+      in_header: false
+      legend_value: false
+      offset_in_name: false
+    data_generator: |
+      return entity.attributes.tomorrow.map((price, index) => {
+        return [new Date().setHours(index,0,0), price];
+      });
+  - entity: sensor.nordpool_kwh_se4_sek_3_10_025
+    color: orange
+    type: line
+    name: Nu
+    unit: SEK
+    show:
+      in_chart: false
+    float_precision: 2
+  - entity: sensor.nordpool_kwh_se4_sek_3_10_025
+    attribute: average
+    type: line
+    color: grey
+    float_precision: 2
+    stroke_width: 2
+    name: Medel idag
+    unit: SEK
+    group_by:
+      duration: 1d
+    show:
+      in_chart: false
+      legend_value: false
+  - entity: sensor.nordpool_kwh_se4_sek_3_10_025
+    attribute: min
+    type: line
+    color: green
+    float_precision: 2
+    stroke_width: 2
+    name: Min idag
+    unit: SEK
+    group_by:
+      duration: 1d
+    show:
+      in_chart: false
+      legend_value: false
+  - entity: sensor.nordpool_kwh_se4_sek_3_10_025
+    attribute: max
+    type: line
+    color: red
+    float_precision: 2
+    stroke_width: 2
+    name: Max idag
+    unit: SEK
+    group_by:
+      duration: 1d
+    show:
+      in_chart: false
+      legend_value: false
