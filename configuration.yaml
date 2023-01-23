@@ -1,0 +1,8 @@
+# Nordpool
+nordpool: sensor:
+    platform: nordpool
+    VAT: true
+    currency: "SEK"
+    region: "SE4"
+    precision: 3
+    price_type: kWh
